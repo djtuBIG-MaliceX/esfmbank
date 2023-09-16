@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Deutsch (Deutschland) resources
+// German (Germany) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 #ifdef _WIN32
@@ -26,7 +26,7 @@ LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 // Dialog
 //
 
-IDD_PROPPAGE_OPERATOR DIALOG DISCARDABLE  0, 0, 196, 204
+IDD_PROPPAGE_OPERATOR DIALOG DISCARDABLE  0, 0, 196, 250
 STYLE WS_CHILD
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -107,14 +107,24 @@ BEGIN
     LTEXT           "Rel. velocity:",IDC_STATIC,111,106,42,9
     COMBOBOX        IDC_RELVEL,154,104,40,90,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "Modulator input\n(Feedback):",IDC_STATIC,4,170,55,16
-    COMBOBOX        IDC_MOD,65,174,45,97,CBS_DROPDOWNLIST | WS_VSCROLL | 
+    LTEXT           "Modulator input\n(Feedback):",IDC_STATIC,3,194,55,16
+    COMBOBOX        IDC_MOD,65,195,45,97,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "by previous op",IDC_STATIC,114,176,55,9
+    LTEXT           "by previous op",IDC_STATIC,113,198,55,9
     COMBOBOX        IDC_KSL,65,90,58,70,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    PUSHBUTTON      "Apply",IDOK,46,190,44,12
-    PUSHBUTTON      "Reset",IDCANCEL,106,190,44,12
+    PUSHBUTTON      "Apply",IDOK,46,236,44,12
+    PUSHBUTTON      "Reset",IDCANCEL,106,236,44,12
+    LTEXT           "Coarse Tune",IDC_STATIC,4,180,61,9
+    EDITTEXT        IDC_CTUNE,65,178,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPINCTUNE,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,99,180,11,9
+    LTEXT           "Fine Tune:",IDC_STATIC,119,180,40,9
+    EDITTEXT        IDC_FTUNE,161,179,23,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPINFTUNE,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,183,181,11,9
 END
 
 IDD_PROPPAGE_VOICES DIALOG DISCARDABLE  0, 0, 211, 236
@@ -139,17 +149,17 @@ BEGIN
     IDD_PROPPAGE_OPERATOR, DIALOG
     BEGIN
         RIGHTMARGIN, 194
-        BOTTOMMARGIN, 202
+        BOTTOMMARGIN, 248
     END
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Deutsch (Deutschland) resources
+#endif    // German (Germany) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Deutsch (Österreich) resources
+// German (Austria) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEA)
 #ifdef _WIN32
@@ -360,7 +370,7 @@ BEGIN
     IDM_EXIT                "Exits the application"
 END
 
-#endif    // Deutsch (Österreich) resources
+#endif    // German (Austria) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

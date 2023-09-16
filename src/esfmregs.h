@@ -1,3 +1,5 @@
+#ifndef ESFMREGS_H
+#define ESFMREGS_H
 /******************************************************************
 
     esfmregs.h - Structures for ESFM registers and patches file
@@ -111,3 +113,5 @@ typedef struct
 } PATCHSET;
 
 #pragma pack()
+
+#endif

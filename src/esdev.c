@@ -9,6 +9,8 @@
 *******************************************************************/
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <minwindef.h>
+#include <algorithm>
 #include <setupapi.h>
 #include <cfgmgr32.h>
 #include "esdev.h"
@@ -37,7 +39,7 @@ DWORD EnumESSDevices(HWND hWnd, void (*EnumCB)(ESS_DEVCFG *pCfg, void *pUser), v
 	infoData.cbSize = sizeof(SP_DEVINFO_DATA);
 	for (n = 0; SetupDiEnumDeviceInfo(hDevInfo, n, &infoData); ++n)
 	{
-		if (SetupDiGetDeviceRegistryProperty(hDevInfo, &infoData, SPDRP_DEVICEDESC, NULL, devCfg.szDevName, sizeof(devCfg.szDevName), NULL))
+		if (SetupDiGetDeviceRegistryProperty(hDevInfo, &infoData, SPDRP_DEVICEDESC, NULL, (unsigned char*)devCfg.szDevName, sizeof(devCfg.szDevName), NULL))
 		{
 			rcCm = CM_Get_First_Log_Conf(&hFirstLogConf, infoData.DevInst, ALLOC_LOG_CONF);
 			if (rcCm != CR_SUCCESS)
@@ -58,7 +60,7 @@ DWORD EnumESSDevices(HWND hWnd, void (*EnumCB)(ESS_DEVCFG *pCfg, void *pUser), v
 						rcCm = CM_Get_Res_Des_Data_Size(&cbData, hCurLogConf, 0);
 						if (rcCm != CR_SUCCESS)
 							cbData = 0;
-						cbData = max(cbData, sizeof(IO_DES));
+						cbData = std::max((unsigned)cbData, sizeof(IO_DES));
 						pIoDesc = (IO_DES *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cbData);
 						if (pIoDesc)
 						{

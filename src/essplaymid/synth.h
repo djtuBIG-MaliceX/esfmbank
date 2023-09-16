@@ -1,3 +1,5 @@
+#pragma once
+
 /*++ BUILD Version: 0001    // Increment this if a change has global effects
 
 

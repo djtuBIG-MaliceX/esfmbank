@@ -1,3 +1,5 @@
+#pragma once
+
 void FAR PASCAL fmreset();
 
 SHORT NATV_CalcBend(USHORT detune, USHORT iBend, USHORT iBendRange);

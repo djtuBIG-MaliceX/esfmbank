@@ -45,7 +45,11 @@
 #define IDC_KSL                         1039
 #define IDC_2NDVOICE                    1039
 #define IDC_STEAL                       1040
+#define IDC_CTUNE                       1040
 #define IDC_TABCHANNELS                 1041
+#define IDC_SPINCTUNE                   1041
+#define IDC_FTUNE                       1042
+#define IDC_SPINFTUNE                   1043
 #define IDC_MELODIC                     1044
 #define IDC_PERCUSSION                  1045
 #define IDC_INSTRUMENTS                 1048

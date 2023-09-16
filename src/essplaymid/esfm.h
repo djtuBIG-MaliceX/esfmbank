@@ -1,3 +1,4 @@
+#pragma once
 /******************************************************************
 
     esfm.h - Functions for communicating with the ES1969 soundcard

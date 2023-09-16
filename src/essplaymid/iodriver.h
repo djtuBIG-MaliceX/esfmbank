@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef IODRIVER_BUTTIO
 #include "iodriver/drv_buttio.h"
 #elif defined(IODRIVER_GIVEIO)

@@ -1,3 +1,5 @@
+#ifndef INSNAMESDATA_H
+#define INSNAMESDATA_H
 /*
  * OPN2 Bank Editor by Wohlstand, a free tool for music bank editing
  * Copyright (c) 2017-2023 Vitaly Novichkov <admin@wohlnet.ru>
@@ -210,3 +212,4 @@ static const struct MidiProgram Gm1Set[] =
     {'P',   0,   0,  86, "GM Percussion Fallback", "Mute Surdo"},
     {'P',   0,   0,  87, "GM Percussion Fallback", "Open Surdo"},
 }; 
+#endif

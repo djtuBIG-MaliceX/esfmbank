@@ -190,7 +190,7 @@ BOOL LoadPatchSet(HWND hWnd, char *pszFile)
 		dwSize = GetFileSize(hFile, NULL);
 		if (dwSize > 512 && (hMap = CreateFileMapping (hFile, NULL, PAGE_READONLY, 0, 0, NULL)))
 		{
-			if (lpMem = MapViewOfFile (hMap, FILE_MAP_READ, 0, 0, 0))
+			if (lpMem = (BYTE*)MapViewOfFile (hMap, FILE_MAP_READ, 0, 0, 0))
 			{
 				pTbl = (PUSHORT)lpMem;
 				for (i=0; i<256; i++)
@@ -459,7 +459,7 @@ LRESULT CALLBACK SplashDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 }
 
 
-LRESULT CALLBACK OperatorDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK OperatorDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) 
 	{
@@ -593,7 +593,7 @@ void CreateTabs(HWND hWnd, UINT uDlgItemTabs, UINT uDlgItemPage, DLGPROC lpDialo
 	TabCtrl_SetCurSel (hWndTabs, 0);
 }
 
-LRESULT CALLBACK VoiceDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK VoiceDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) 
 	{

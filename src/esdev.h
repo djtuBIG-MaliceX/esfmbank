@@ -1,3 +1,4 @@
+#pragma once
 /******************************************************************
 
     esdev.h - Functions to find ES1969 sound card IO port address
@@ -7,6 +8,7 @@
     Copyright (c) 2023, leecher@dose.0wnz.at  All Rights Reserved.
 
 *******************************************************************/
+
 enum
 {
 	ESSPortIO = 0,
