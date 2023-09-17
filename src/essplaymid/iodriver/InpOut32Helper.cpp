@@ -26,7 +26,7 @@ HINSTANCE hInpOutDll ;
  */
 BOOL OpenInpOut32(void)
 {
-	hInpOutDll = LoadLibrary ( "InpOut32.DLL" ) ;	//The 32bit DLL. If we are building x64 C++ 
+	hInpOutDll = LoadLibraryW(L"InpOut32.DLL") ;	//The 32bit DLL. If we are building x64 C++ 
 													//applicaiton then use InpOutx64.dll
 	if ( hInpOutDll != NULL )
 	{
@@ -39,7 +39,7 @@ BOOL OpenInpOut32(void)
          return FALSE; 
    }
 
-    MessageBox(NULL, "Cannot load inpout32.dll for hardware OPL playback.", "OPL3_HW", MB_OK | MB_ICONEXCLAMATION);
+   MessageBoxW(NULL, L"Cannot load inpout32.dll for hardware OPL playback.", L"OPL3_HW", MB_OK | MB_ICONEXCLAMATION);
    return TRUE;
 }
 
