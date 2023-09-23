@@ -13,6 +13,8 @@
 #include "ess.h"
 #include "natv.h"
 
+#include "../esfmu_helper.h"
+
 static PUCHAR m_pSBBase = NULL;
 
 void KeStallExecutionProcessor(DWORD uSecTime) {
@@ -39,6 +41,8 @@ VOID FAR PASCAL fmwrite (WORD wAddress, BYTE bValue)
   KeStallExecutionProcessor(10);
   WRITE_PORT_UCHAR(m_pSBBase + 1, bValue);
   KeStallExecutionProcessor(10);
+
+  ESFM_write_reg(getESFMuObject(), wAddress, bValue);
 }
 
 
