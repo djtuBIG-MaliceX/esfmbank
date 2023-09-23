@@ -13,6 +13,7 @@
 #include "ess.h"
 #include "natv.h"
 
+// hax my anus
 #include "../esfmu_helper.h"
 
 static PUCHAR m_pSBBase = NULL;
@@ -42,7 +43,7 @@ VOID FAR PASCAL fmwrite (WORD wAddress, BYTE bValue)
   WRITE_PORT_UCHAR(m_pSBBase + 1, bValue);
   KeStallExecutionProcessor(10);
 
-  ESFM_write_reg(getESFMuObject(), wAddress, bValue);
+  ESFM_write_reg_buffered(getESFMuObject(), wAddress, bValue);
 }
 
 
