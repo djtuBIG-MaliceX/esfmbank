@@ -20,6 +20,7 @@
 #include "essplaymid/esfm.h"
 #include "essplaymid/natv.h"
 #include "esdev.h"
+#include "esfm.h"
 
 #pragma comment (lib, "comctl32.lib")  // Common controls
 #pragma comment (lib, "winmm.lib")
@@ -33,6 +34,106 @@ typedef struct
 	PATCHSET patches[256];
 } PATCHMEM;
 #pragma pack()
+
+// ESFMu stuff
+esfm_chip esfmu;
+
+
+// WAVE PLAY
+
+HWAVEOUT	hWaveOut;
+WAVEHDR	*WaveHdr;
+HANDLE	hEvent;
+DWORD	chunks;
+DWORD	prevPlayPos;
+DWORD	getPosWraps;
+unsigned int sampleRate = 49716;
+unsigned int bufferSize = (49716 * 100 / 1000.f);
+unsigned int chunkSize = (49716 * 10 / 1000.f);
+BOOL	stopProcessing = TRUE;
+int16_t *buffer;
+
+
+int InitWaveOut() {
+	DWORD callbackType = CALLBACK_NULL;
+	DWORD_PTR callback = NULL;
+	buffer = malloc(2 * bufferSize);
+	hEvent = CreateEvent(NULL, FALSE, TRUE, NULL);
+	callback = (DWORD_PTR)hEvent;
+	callbackType = CALLBACK_EVENT;
+
+	PCMWAVEFORMAT wFormat = {WAVE_FORMAT_PCM, 2, sampleRate, sampleRate * 4, 4, 16};
+
+	// Open waveout device
+	int wResult = waveOutOpen(&hWaveOut, WAVE_MAPPER, (LPCWAVEFORMATEX)&wFormat, callback, NULL, callbackType);
+	if (wResult != MMSYSERR_NOERROR)
+	{
+		MessageBox(NULL, "Failed to open waveform output device", "OPL3", MB_OK | MB_ICONEXCLAMATION);
+		return 1;
+	}
+
+	// Prepare headers
+	chunks = bufferSize / chunkSize;
+	WaveHdr = malloc(sizeof(WAVEHDR) * chunks);
+	LPSTR chunkStart = (LPSTR)buffer;
+	DWORD chunkBytes = 4 * chunkSize;
+	for (int i = 0; i < chunks; i++)
+	{
+		WaveHdr[i].dwBufferLength = chunkBytes;
+		WaveHdr[i].lpData = chunkStart;
+		WaveHdr[i].dwFlags = 0L;
+		WaveHdr[i].dwLoops = 0L;
+		chunkStart += chunkBytes;
+	}
+	wResult = waveOutPrepareHeader(hWaveOut, (LPWAVEHDR)&WaveHdr, sizeof(WAVEHDR));
+	if (wResult != MMSYSERR_NOERROR)
+	{
+		MessageBox(NULL, "Failed to Prepare Header", "OPL3", MB_OK |
+			MB_ICONEXCLAMATION);
+		return 1;
+	}
+	stopProcessing = FALSE;
+	return 0;
+}
+
+
+int CloseWaveOut() {
+	stopProcessing = TRUE;
+	SetEvent(hEvent);
+	int wResult = waveOutReset(hWaveOut);
+	if (wResult != MMSYSERR_NOERROR) 
+	{
+		MessageBox(NULL, "Failed to Reset WaveOut", "OPL3", MB_OK | MB_ICONEXCLAMATION);
+		return 1;
+	}
+
+	for (UINT i = 0; i < chunks; i++)
+	{
+		wResult = waveOutUnprepareHeader(hWaveOut, &WaveHdr[i], sizeof(WAVEHDR));
+		if (wResult != MMSYSERR_NOERROR)
+		{
+			MessageBox(NULL, "Failed to Unprepare Wave Header", "OPL3", 
+				MB_OK | MB_ICONEXCLAMATION);
+			return 1;
+		}
+	}
+	free(WaveHdr);
+	WaveHdr = NULL;
+
+	wResult = waveOutClose(hWaveOut);
+	if (wResult != MMSYSERR_NOERROR) {
+		MessageBox(NULL, "Failed to Close WaveOut", "OPL3", 
+			MB_OK | MB_ICONEXCLAMATION);
+		return 1;
+	}
+	if (hEvent != NULL)
+	{
+		CloseHandle(hEvent);
+		hEvent = NULL;
+	}
+	return 0;
+}
+
 
 HINSTANCE g_hInstance;
 HWND g_hMainWnd;
@@ -120,8 +221,8 @@ static void ChangeFixedPitch(HWND hWnd, HWND hWndFP)
 		SetDlgItemText(hWnd, IDC_BLOCKTXT, "Fine tune:");
 		SendDlgItemMessage (hWnd, IDC_FNUM, EM_LIMITTEXT, 3, 0);
 		SendDlgItemMessage (hWnd, IDC_BLOCK, EM_LIMITTEXT, 2, 0);
-		SendDlgItemMessage (hWnd, IDC_SPINFNUM, UDM_SETRANGE, 0, MAKELONG(127,0));
-		SendDlgItemMessage (hWnd, IDC_SPINBLOCK, UDM_SETRANGE, 0, MAKELONG(63,0));
+		SendDlgItemMessage (hWnd, IDC_SPINFNUM, UDM_SETRANGE, 0, MAKELONG(63,-64));
+		SendDlgItemMessage (hWnd, IDC_SPINBLOCK, UDM_SETRANGE, 0, MAKELONG(31,-32));
 	}
 }
 
@@ -1124,6 +1225,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	hWndSplash = CreateDialog (hInstance, MAKEINTRESOURCE(IDD_SPLASH), NULL, (DLGPROC)SplashDlgProc);
 	ProcessPendingMessages(hWndSplash);
+
+	InitWaveOut();
+	ESFM_init(&esfmu);
+
 	g_hMainWnd = CreateDialog (hInstance, MAKEINTRESOURCE(IDD_MAIN), NULL, (DLGPROC)MainDlgProc);
 	ProcessPendingMessages(g_hMainWnd);
 	DestroyWindow(hWndSplash);
@@ -1136,5 +1241,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		TellError (NULL, "Cannot create main window");
 	}
 
+	CloseWaveOut();
 	return iRetVal;
 }
