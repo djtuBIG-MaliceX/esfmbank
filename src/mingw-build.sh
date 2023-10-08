@@ -18,9 +18,9 @@ rm *.o *.exe
 # intermediate compile
 $CC -c esdev.c $LIBS -o esdev.o
 $CC -c esfmbank.c $LIBS -o esfmbank.o
-$CC -c esfm.c $LIBS -o esfmu.o
+$CC -c ../extern/ESFMu/esfm.c $LIBS -o esfmu.o
 $CC -c esfmu_helper.c $LIBS -o esfmu_helper.o
-$CC -c esfm_registers.c $LIBS -o esfm_registers.o
+$CC -c ../extern/ESFMu/esfm_registers.c $LIBS -o esfm_registers.o
 $CC -c essplaymid/esfm.c $LIBS -o esfm.o
 $CC -c essplaymid/natv.c $LIBS -o natv.o
 $CC -c essplaymid/iodriver/drv_inpout32.c $LIBS -o drv_inpout32.o

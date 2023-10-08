@@ -1,7 +1,7 @@
 #ifndef ESFMU_HELPER_H
 #define ESFMU_HELPER_H
 
-#include "esfm.h"
+#include "../extern/ESFMu/esfm.h"
 
 // Fucking disgusting hax to make the same ESFMu object visible across all files
 esfm_chip* getESFMuObject();

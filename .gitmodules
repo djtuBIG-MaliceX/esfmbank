@@ -1,0 +1,3 @@
+[submodule "extern/ESFMu"]
+	path = extern/ESFMu
+	url = https://github.com/Kagamiin/ESFMu.git
