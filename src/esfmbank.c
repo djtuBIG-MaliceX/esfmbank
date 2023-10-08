@@ -874,7 +874,7 @@ LRESULT CALLBACK MainDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 					// 	SendMessage((HWND)lParam, BM_SETCHECK, BST_UNCHECKED, 0);
 					// 	break;
 					// }
-
+					/*
 					if (!esfm_init((USHORT)iPort))
 					{
 						MessageBox(hWnd, "Cannot initialize Port IO driver, are you sure that it is installed and running and you started this application as administrator?", "Error",
@@ -882,8 +882,9 @@ LRESULT CALLBACK MainDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 						SendMessage((HWND)lParam, BM_SETCHECK, BST_UNCHECKED, 0);
 						break;
 					}
-					else
+					else*/
 					{
+						esfm_init((uint16_t)iPort);
 						EnablePlayButtons(hWnd, TRUE);
 						StartWaveOut();
 					}

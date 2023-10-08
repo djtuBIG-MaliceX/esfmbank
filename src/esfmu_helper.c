@@ -24,12 +24,6 @@ typedef struct eht {
 static esfmu_helper_t helper;
 
 esfm_chip* getESFMuObject() {
-    // static esfm_chip *esfmu = NULL;
-    // if (esfmu == NULL) {
-    //     esfmu = (esfm_chip*)malloc(sizeof(esfm_chip));
-    //     ESFM_init(esfmu);
-    // }
-    // return esfmu;
     if (!helper.esfm_initialized) {
         ESFM_init(&helper.esfmu);
 
@@ -157,7 +151,11 @@ int InitWaveOut()
 
 	// Prepare headers
 	helper.chunks = helper.bufferSize / helper.chunkSize;
-	helper.WaveHdr = malloc(sizeof(WAVEHDR) * helper.chunks);
+
+	if (helper.WaveHdr == NULL) {
+		helper.WaveHdr = malloc(sizeof(WAVEHDR) * helper.chunks);
+	}
+	
 	LPSTR chunkStart = (LPSTR)buffer;
 	DWORD chunkBytes = 4 * helper.chunkSize;
 	for (int i = 0; i < helper.chunks; i++)
@@ -183,7 +181,10 @@ int InitWaveOut()
 
 int StartWaveOut()
 {
-	//Render(GetWaveBuffer(), bufferSize);
+	static BOOL rendering = FALSE;
+
+	if (rendering) return 0;
+
 	helper.framesRendered = 0;
 
 	helper.getPosWraps = 0;
@@ -199,6 +200,8 @@ int StartWaveOut()
 	}
 	
 	_beginthread(RenderingThread, 16384, NULL);
+
+	rendering = TRUE;
     return 0;
 }
 
