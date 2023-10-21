@@ -60,7 +60,7 @@ DWORD EnumESSDevices(HWND hWnd, void (*EnumCB)(ESS_DEVCFG *pCfg, void *pUser), v
 						rcCm = CM_Get_Res_Des_Data_Size(&cbData, hCurLogConf, 0);
 						if (rcCm != CR_SUCCESS)
 							cbData = 0;
-						cbData = std::max((unsigned)cbData, sizeof(IO_DES));
+						cbData = std::max((std::size_t)cbData, sizeof(IO_DES));
 						pIoDesc = (IO_DES *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cbData);
 						if (pIoDesc)
 						{

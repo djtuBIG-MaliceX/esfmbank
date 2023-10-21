@@ -26,8 +26,12 @@ HINSTANCE hInpOutDll ;
  */
 BOOL OpenInpOut32(void)
 {
+#ifndef _WIN64
 	hInpOutDll = LoadLibraryW(L"InpOut32.DLL") ;	//The 32bit DLL. If we are building x64 C++ 
 													//applicaiton then use InpOutx64.dll
+#else
+   hInpOutDll = LoadLibraryW(L"InpOutx64.DLL");
+#endif
 	if ( hInpOutDll != NULL )
 	{
 		gfpOut32 = (lpOut32)GetProcAddress(hInpOutDll, "Out32");

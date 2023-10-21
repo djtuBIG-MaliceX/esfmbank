@@ -2,8 +2,8 @@
 # mingw shit
 #CC="clang++"
 CC="g++"
-LIBS="-static -lm -mwindows -O3 -lcfgmgr32 -lwinmm -lsetupapi -lshlwapi -lcomctl32 -U_WIN64 -fpermissive"
-#LIBS="-static -lm -mwindows -ggdb -lcfgmgr32 -lwinmm -lsetupapi -lshlwapi -lcomctl32 -U_WIN64 -fpermissive"
+#LIBS="-static -lm -mwindows -O3 -lcfgmgr32 -lwinmm -lsetupapi -lshlwapi -lcomctl32 -U_WIN64 -fpermissive"
+LIBS="-static -lm -mwindows -ggdb -lcfgmgr32 -lwinmm -lsetupapi -lshlwapi -lcomctl32 -U_WIN64 -fpermissive"
 #LIBS="-static -lm -mwindows -fdiagnostics-color=always -g -lcfgmgr32 -lwinmm -lsetupapi -lshlwapi -lcomctl32 -U_WIN64 -fpermissive"
 #LIBS="-static -fsanitize=address -lm -mwindows -ggdb -lcfgmgr32 -lwinmm -lsetupapi -lshlwapi -lcomctl32 -U_WIN64 -fpermissive"
 

@@ -8,13 +8,13 @@ typedef struct eht {
     HWAVEOUT hWaveOut;
     WAVEHDR	*WaveHdr;
     HANDLE	hEvent;
-    DWORD	chunks;
-    DWORD	prevPlayPos;
-    DWORD	getPosWraps;
-    DWORD framesRendered;
-    unsigned int sampleRate;
-    unsigned int bufferSize;
-    unsigned int chunkSize;
+    uint64_t	chunks;
+    uint64_t	prevPlayPos;
+    uint64_t	getPosWraps;
+    uint64_t framesRendered;
+    uint32_t sampleRate;
+    uint32_t bufferSize;
+    uint32_t chunkSize;
     BOOL	stopProcessing;
     esfm_chip esfmu;
     BOOL esfm_initialized;
@@ -132,17 +132,13 @@ int InitWaveOut()
     helper.chunkSize = (49716 * 10 / 1000.f);
     helper.stopProcessing = TRUE;
 
-	DWORD callbackType = CALLBACK_EVENT;
 	helper.hEvent = CreateEvent(NULL, FALSE, TRUE, NULL);
-    DWORD_PTR callback = (DWORD_PTR)helper.hEvent;
 	int16_t *buffer = GetWaveBuffer();
-	
-	callbackType = CALLBACK_EVENT;
 
-	PCMWAVEFORMAT wFormat = {WAVE_FORMAT_PCM, 2, helper.sampleRate, helper.sampleRate * 4, 4, 16};
+	WAVEFORMATEX wFormat = {WAVE_FORMAT_PCM, 2, helper.sampleRate, helper.sampleRate * 4, 4, 16};
 
 	// Open waveout device
-	int wResult = waveOutOpen(&helper.hWaveOut, WAVE_MAPPER, (LPCWAVEFORMATEX)&wFormat, callback, 0, callbackType);
+	int wResult = waveOutOpen(&helper.hWaveOut, WAVE_MAPPER, &wFormat, helper.hEvent, 0, CALLBACK_EVENT);
 	if (wResult != MMSYSERR_NOERROR)
 	{
 		MessageBox(NULL, "Failed to open waveform output device", "ESFMu Helper", MB_OK | MB_ICONEXCLAMATION);
@@ -166,7 +162,7 @@ int InitWaveOut()
 		helper.WaveHdr[i].dwLoops = 0L;
 		chunkStart += chunkBytes;
 	
-        wResult = waveOutPrepareHeader(helper.hWaveOut, &helper.WaveHdr[i], sizeof(WAVEHDR));
+        wResult = waveOutPrepareHeader(helper.hWaveOut, &helper.WaveHdr[i], 48U/*sizeof(WAVEHDR)*/);
         if (wResult != MMSYSERR_NOERROR)
         {
             MessageBox(NULL, "Failed to Prepare Header", "ESFMu Helper", MB_OK |
